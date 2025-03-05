@@ -1,16 +1,20 @@
 import { Request, Response } from "express";
-import { db } from "../firebase"; 
+import { db } from "../firebase";
 import { Company } from "../model/companyModel";
-
 
 const companyRef = db.collection("companies");
 
-export const createCompany = async (req: Request, res: Response):Promise<any> => {
+export const createCompany = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
   try {
     const { name, GSTNumber, phone, address } = req.body;
 
     if (!name || !GSTNumber || !phone || !address) {
-      return res.status(400).json({ error: "All required fields must be provided" });
+      return res
+        .status(400)
+        .json({ error: "All required fields must be provided" });
     }
 
     const newCompany: Company = {
@@ -28,8 +32,10 @@ export const createCompany = async (req: Request, res: Response):Promise<any> =>
   }
 };
 
-
-export const getCompanyById = async (req: Request, res: Response):Promise<any> => {
+export const getCompanyById = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
   try {
     const { companyId } = req.params;
 
@@ -45,11 +51,16 @@ export const getCompanyById = async (req: Request, res: Response):Promise<any> =
   }
 };
 
-
-export const getAllCompanies = async (req: Request, res: Response):Promise<any> => {
+export const getAllCompanies = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
   try {
     const snapshot = await companyRef.get();
-    const companies = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const companies = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
     return res.status(200).json(companies);
   } catch (error) {
@@ -58,8 +69,10 @@ export const getAllCompanies = async (req: Request, res: Response):Promise<any> 
   }
 };
 
-
-export const updateCompany = async (req: Request, res: Response):Promise<any> => {
+export const updateCompany = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
   try {
     const { companyId } = req.params;
     const { name, GSTNumber, phone, address } = req.body;
@@ -77,15 +90,19 @@ export const updateCompany = async (req: Request, res: Response):Promise<any> =>
     };
 
     await companyRef.doc(companyId).update(updatedCompany);
-    return res.status(200).json({ message: "Company updated successfully", ...updatedCompany });
+    return res
+      .status(200)
+      .json({ message: "Company updated successfully", ...updatedCompany });
   } catch (error) {
     console.error("Error updating company:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
 
-
-export const deleteCompany = async (req: Request, res: Response):Promise<any> => {
+export const deleteCompany = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
   try {
     const { companyId } = req.params;
 

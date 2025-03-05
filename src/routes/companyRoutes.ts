@@ -7,14 +7,12 @@ import {
   deleteCompany,
 } from "../controllers/companyController";
 
-
 const router = express.Router();
 
-
-router.post("/create", createCompany); 
-router.get("/:companyId", getCompanyById); 
-router.get("/companies", getAllCompanies); 
-router.put("/:companyId", updateCompany); 
-router.delete("/:companyId", deleteCompany); 
+router.post("/create", createCompany);
+router.get("/:companyId", getCompanyById);
+router.get("/companies", getAllCompanies);
+router.put("/:companyId", updateCompany);
+router.delete("/:companyId", deleteCompany);
 
 export default router;

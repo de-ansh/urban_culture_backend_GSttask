@@ -13,7 +13,6 @@ const PORT = 4000;
 app.use(express.json());
 app.use(cors());
 
-
 app.use("/api/company", companyRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);

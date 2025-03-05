@@ -5,8 +5,6 @@ import * as firebase from "firebase-admin/auth";
 
 const auth = firebase.getAuth();
 
-
-
 export const signup = async (req: Request, res: Response): Promise<any> => {
   try {
     const { name, email, phone, address, password, companyId } = req.body;
@@ -25,7 +23,11 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
 
     // Ensure phone number format is correct
     if (!phone.startsWith("+")) {
-      return res.status(400).json({ message: "Phone number must start with + (e.g., +919876543210)" });
+      return res
+        .status(400)
+        .json({
+          message: "Phone number must start with + (e.g., +919876543210)",
+        });
     }
 
     // Hash the password
@@ -46,9 +48,8 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
       phone,
       address,
       companyId,
-      password:hashedPassword,
+      password: hashedPassword,
     });
-
 
     // Generate a Firebase Authentication token
     const token = await auth.createCustomToken(userRecord.uid);
@@ -63,7 +64,6 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
     return res.status(500).json({ message: "Error signing up", error });
   }
 };
-
 
 export const login = async (req: Request, res: Response): Promise<any> => {
   try {

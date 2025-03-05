@@ -18,7 +18,6 @@ export const createBooking = async (
         .json({ error: "All required fields must be provided" });
     }
 
-    // Fetch service details
     const serviceDoc = await serviceRef.doc(serviceId).get();
     if (!serviceDoc.exists) {
       return res.status(404).json({ error: "Service not found" });
@@ -46,7 +45,6 @@ export const createBooking = async (
   }
 };
 
-
 export const getBookingById = async (
   req: Request,
   res: Response,
@@ -71,7 +69,7 @@ export const getAllBookings = async (
   res: Response,
 ): Promise<any> => {
   try {
-    const { userId } = req.query; 
+    const { userId } = req.query;
 
     let query = bookingRef;
     if (userId) {
@@ -95,21 +93,28 @@ export const getAllBookings = async (
   }
 };
 
-
-export const updateBookingStatus = async (req: Request, res: Response):Promise<any> => {
-    try {
-        const { bookingId, status } = req.body;
-        if (!bookingId || !status) {
-            return res.status(400).json({ message: "Booking ID and status are required." });
-        }
-
-        // Update booking status in Firestore
-        await db.collection("bookings").doc(bookingId).update({ status });
-
-        return res.status(200).json({ message: "Booking status updated successfully" });
-    } catch (error) {
-        return res.status(500).json({ message: "Error updating booking status", error });
+export const updateBookingStatus = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
+  try {
+    const { bookingId, status } = req.body;
+    if (!bookingId || !status) {
+      return res
+        .status(400)
+        .json({ message: "Booking ID and status are required." });
     }
+
+    await db.collection("bookings").doc(bookingId).update({ status });
+
+    return res
+      .status(200)
+      .json({ message: "Booking status updated successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error updating booking status", error });
+  }
 };
 
 // Delete a booking
